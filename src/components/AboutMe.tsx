@@ -9,9 +9,9 @@ import SplitType from "split-type";
 gsap.registerPlugin(ScrollTrigger);
 
 const AboutMe = () => {
-  const sectionRef = useRef(null);
-  const boxRef = useRef(null);
-  const containerRef = useRef(null);
+  const sectionRef = useRef<null | HTMLDivElement>(null);
+  const boxRef = useRef<null | HTMLDivElement>(null);
+  const containerRef = useRef<null | HTMLDivElement>(null);
 
   const headline = "About Me";
   const subTextArray = [
@@ -66,15 +66,14 @@ const AboutMe = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const paragraph = containerRef.current.querySelector("div .animatedText");
-    console.log(paragraph);
+    const paragraph =
+      containerRef.current.querySelector<HTMLDivElement>(".animatedText");
 
     const splits: SplitType[] = [];
     const timelines: gsap.core.Timeline[] = [];
 
-    // paragraphs.forEach((paragraph: any, index: number) => {
-    // console.log(paragraph);
-    const split = new SplitType(paragraph, { types: "lines, words, chars" });
+    if (!paragraph) return;
+    const split = new SplitType(paragraph, { types: "lines,words,chars" });
     splits.push(split);
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -88,8 +87,6 @@ const AboutMe = () => {
       },
     });
     gsap.set(split.chars, {
-      // color: "#3D3D3D",
-      // color: #616161
       color: "#616161",
       filter: "blur(2px)",
     });
@@ -109,7 +106,7 @@ const AboutMe = () => {
       <div className="min-h-screen bg-zinc-800"></div>
       <section
         id="aboutMe"
-        ref={(el) => {
+        ref={(el: HTMLDivElement) => {
           sectionRef.current = el;
           containerRef.current = el;
         }}
