@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { HashLink } from "react-router-hash-link";
 import { FaLinkedin, FaGithub, FaBars, FaTimes } from "react-icons/fa";
 import { Avatar, AvatarImage, AvatarFallback, AvatarBadge } from "./ui/avatar"; // Adjust paths

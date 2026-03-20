@@ -1,7 +1,7 @@
 import { FaGithub } from "react-icons/fa";
 import { TbWorld } from "react-icons/tb";
 import { Link } from "react-router";
-import FadeGsapSlider from "../Test2";
+import FadeGsapSlider from "../FadeGsapSlider";
 
 const Section5 = () => {
   const title = "Photographer Portfolio";

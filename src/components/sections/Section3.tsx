@@ -1,4 +1,4 @@
-import FadeGsapSlider from "../Test2";
+import FadeGsapSlider from "../FadeGsapSlider";
 import { Link } from "react-router";
 import { FaGithub } from "react-icons/fa";
 import { TbWorld } from "react-icons/tb";
