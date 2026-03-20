@@ -6,7 +6,7 @@ export default function FadeGsapSlider({ images }: { images: string[] }) {
   const slidesRef = useRef<HTMLImageElement[]>([]);
 
   // Animate fade
-  const animateSlide = (from: any, to: any) => {
+  const animateSlide = (from: number, to: number) => {
     const currentSlide = slidesRef.current[from];
     const nextSlide = slidesRef.current[to];
 
@@ -27,12 +27,6 @@ export default function FadeGsapSlider({ images }: { images: string[] }) {
     setCurrent(next);
   };
 
-  const prevSlide = () => {
-    const prev = current === 0 ? images.length - 1 : current - 1;
-    animateSlide(current, prev);
-    setCurrent(prev);
-  };
-
   // Autoplay
   useEffect(() => {
     const interval = setInterval(nextSlide, 4000);
@@ -41,32 +35,19 @@ export default function FadeGsapSlider({ images }: { images: string[] }) {
 
   return (
     <div className="relative w-full h-full mx-auto overflow-hidden ">
-      {/* Prev / Next Buttons */}
-      {/* <button
-        onClick={prevSlide}
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded z-10 hover:bg-black/70"
-      >
-        ❮
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded z-10 hover:bg-black/70"
-      >
-        ❯
-      </button> */}
-
       {/* Slides */}
       {images.map((img, index) => (
         <img
           key={index}
-          ref={(el) => (slidesRef.current[index] = el)}
+          ref={(el) => {
+            if (!el) return;
+            slidesRef.current[index] = el;
+          }}
           src={img}
           alt={`slide ${index}`}
           className={`absolute  rounded-xl transition-all duration-300 ease-in-out top-0 left-0 h-full object-cover  w-full  ${index === 0 ? "block" : "hidden"}`}
         />
       ))}
-
       {/* Pagination Bullets */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
         {images.map((_, idx) => (
