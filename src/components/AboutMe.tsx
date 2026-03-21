@@ -110,7 +110,6 @@ const AboutMe = () => {
           sectionRef.current = el;
           containerRef.current = el;
         }}
-        // ref={containerRef}
         className="flex items-center  justify-center bg-zinc-800 text-foreground overflow-hidden min-h-screen px-4"
       >
         <div

@@ -15,6 +15,7 @@ const Footer = () => {
     message: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   useGSAP(() => {
@@ -68,17 +69,40 @@ const Footer = () => {
     return true;
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validateForm()) return;
-    setShowSuccess(true);
-    setForm({
-      firstName: "",
-      lastName: "",
-      email: "",
-      message: "",
-    });
-    console.log(form);
+    setLoading(true);
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
+    const formData = new FormData(e.currentTarget);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setError("");
+        setShowSuccess(true);
+        setForm({
+          firstName: "",
+          lastName: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        setError(data.message || "Something went wrong");
+      }
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Network error. Try again.",
+      );
+      console.log(error);
+    }
+    setLoading(false);
   };
   return (
     <div
@@ -92,6 +116,12 @@ const Footer = () => {
         </p>
       </div>
       <form onSubmit={handleSubmit} className="w-full max-w-125 ">
+        <input
+          type="hidden"
+          name="access_key"
+          value="7aaa1133-0598-43ec-95c6-d7171b19a9ce"
+        ></input>
+        <input type="checkbox" name="botcheck" className="hidden" />
         <div className="placeholder:text-zinc-400 text-white w-full flex flex-col items-center gap-4">
           <div className="flex gap-4  justify-center w-full trigger">
             <input
@@ -129,10 +159,11 @@ const Footer = () => {
           />
           {error && <p className="text-red-600">{error}</p>}
           <button
+            disabled={loading}
             type="submit"
             className="bg-accent  w-full py-4 rounded-md cursor-pointer trigger"
           >
-            Send
+            {loading ? "Sending..." : "Send"}
           </button>
         </div>
       </form>
